@@ -1,0 +1,29 @@
+:root {
+  font-family: "Cairo", "Noto Sans Arabic", -apple-system, BlinkMacSystemFont, "Segoe UI", Tahoma, sans-serif;
+  color: #0d1220;
+  background: #eef1f5;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  --bg: #f7f8fa;
+  --surface: #ffffff;
+  --text: #0d1220;
+  --muted: #6b7280;
+  --subtle: #9ca3af;
+  --primary: #1f6feb;
+  --primary-hover: #1a5fcc;
+  --primary-soft: #eaf1fd;
+  --border: #e8eaef;
+  --divider: #edeff4;
+  --control: #eff1f5;
+  --disabled: #f1f3f7;
+  --success: #16a34a;
+  --success-text: #12813c;
+  --success-bg: #e7f6ec;
+  --success-border: #cbebd6;
+  --danger: #dc2626;
+  --danger-bg: #fef2f2;
+  --danger-border: #f7d4d4;
+  --shadow: 0 1px 2px rgba(16, 24, 40, 0.05), 0 6px 16px rgba(16, 24, 40, 0.05);
+  --gutter: clamp(16px, 6.1vw, 24px);
+}
