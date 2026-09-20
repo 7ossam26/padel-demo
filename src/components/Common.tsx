@@ -25,7 +25,7 @@ export function StatusBadge({ booking, player = false }: { booking: Booking; pla
 export function CourtCard({ club, to }: { club: Club; to: string }) {
   return (
     <Link className="court-card" to={to}>
-      <CourtArtwork type={club.artwork} />
+      <CourtArtwork type={club.artwork} clubId={club.id} />
       <span className="court-card-body">
         <span className="court-title-row"><strong>{club.name}</strong><span className="rating"><Icon name="star" size={13} /><span className="ltr">{club.rating}</span></span></span>
         <span className="court-meta">{club.area} · <span className="ltr">{club.distanceKm}</span> كم</span>
@@ -48,7 +48,7 @@ export function OwnerBookingRow({ booking, court, to, showPrice = false }: { boo
 export function PlayerBookingCard({ booking, club }: { booking: Booking; club: Club }) {
   return (
     <article className={`player-booking-card ${booking.status === "cancelled" ? "is-cancelled" : ""}`}>
-      <span className="booking-thumb"><CourtArtwork type={club.artwork} /></span>
+      <span className="booking-thumb"><CourtArtwork type={club.artwork} clubId={club.id} /></span>
       <span className="booking-card-copy">
         <strong>{club.name}</strong>
         <small>{formatShortDate(booking.date)} · <span className="ltr">{booking.startTime} – {booking.endTime}</span></small>

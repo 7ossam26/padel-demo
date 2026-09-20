@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useDemo } from "../../app/DemoProvider";
 import { CourtArtwork } from "../../components/CourtArtwork";
@@ -16,8 +16,23 @@ export function FiltersScreen() {
   const original = parseFilters(params, today);
   const [draft, setDraft] = useState(original);
   const resultCount = filterClubs(state.clubs, draft).length;
+  const priceStart = ((draft.minPrice - 150) / (800 - 150)) * 100;
+  const priceEnd = ((draft.maxPrice - 150) / (800 - 150)) * 100;
   const clear = () => setDraft({ ...defaultFilters(today), q: original.q, date: "" });
   const apply = () => navigate(`/player/courts?${filtersToParams(draft).toString()}`);
+  const selectNearestPrice = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (event.target instanceof HTMLInputElement) return;
+
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const percentage = Math.min(1, Math.max(0, (event.clientX - bounds.left) / bounds.width));
+    const price = Math.round((150 + percentage * (800 - 150)) / 50) * 50;
+
+    if (Math.abs(price - draft.minPrice) <= Math.abs(draft.maxPrice - price)) {
+      setDraft({ ...draft, minPrice: Math.min(price, draft.maxPrice - 50) });
+    } else {
+      setDraft({ ...draft, maxPrice: Math.max(price, draft.minPrice + 50) });
+    }
+  };
 
   return (
     <MobileShell className="filter-route">
@@ -36,11 +51,15 @@ export function FiltersScreen() {
         <label className="field"><span>التاريخ</span><span className="input-icon-wrap"><Icon name="calendar" size={18} /><input type="date" min={today} value={draft.date} onChange={(event) => setDraft({ ...draft, date: event.target.value })} /></span>{draft.date && <small>{formatShortDate(draft.date)}</small>}</label>
         <div className="field price-filter">
           <span className="field-between"><span>السعر للساعة</span><strong><span className="ltr">{draft.minPrice} – {draft.maxPrice}</span> جنيه</strong></span>
-          <div className="dual-range">
+          <div
+            className="dual-range"
+            onPointerDown={selectNearestPrice}
+            style={{ "--range-start": `${priceStart}%`, "--range-end": `${priceEnd}%` } as CSSProperties}
+          >
             <input aria-label="أقل سعر" dir="ltr" type="range" min="150" max="800" step="50" value={draft.minPrice} onChange={(event) => setDraft({ ...draft, minPrice: Math.min(Number(event.target.value), draft.maxPrice - 50) })} />
             <input aria-label="أعلى سعر" dir="ltr" type="range" min="150" max="800" step="50" value={draft.maxPrice} onChange={(event) => setDraft({ ...draft, maxPrice: Math.max(Number(event.target.value), draft.minPrice + 50) })} />
           </div>
-          <span className="range-labels"><small>150 جنيه</small><small>800 جنيه</small></span>
+          <span className="range-labels" dir="ltr"><small>150 جنيه</small><small>800 جنيه</small></span>
         </div>
         <div className="field"><span>نوع الملعب</span><SegmentedControl label="نوع الملعب" value={draft.courtType} onChange={(courtType) => setDraft({ ...draft, courtType })} options={[{ value: "all", label: "الكل" }, { value: "indoor", label: "مغطى" }, { value: "outdoor", label: "مكشوف" }]} /></div>
         <button className="button button-primary sheet-submit" type="button" onClick={apply}>اعرض {formatNumber(resultCount)} {resultCount === 1 ? "ملعب" : "ملاعب"}</button>

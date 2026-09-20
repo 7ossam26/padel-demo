@@ -19,7 +19,7 @@ export function CourtDetailScreen() {
   return (
     <MobileShell className="court-detail-screen screen-column">
       <div className="detail-hero">
-        <CourtArtwork type={club.artwork} />
+        <CourtArtwork type={club.artwork} clubId={club.id} priority />
         <div className="hero-back"><BackButton to={`/player/courts${query}`} /></div>
         <div className="carousel-dots"><span /><i /><i /></div>
       </div>

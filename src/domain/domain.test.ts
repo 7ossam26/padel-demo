@@ -4,10 +4,18 @@ import { getSlotOptions, isCourtAvailable } from "./availability";
 import { bookingPaymentStatus } from "./bookings";
 import { addDays, overlaps, weekday } from "./dates";
 import { calculatePrice } from "./pricing";
+import { defaultFilters, filterClubs } from "./filters";
 
 const ANCHOR = "2099-09-20";
 
 describe("booking and availability domain", () => {
+  it("filters clubs by the selected hourly price range", () => {
+    const state = createSeed(ANCHOR);
+    const filters = { ...defaultFilters(""), maxPrice: 350 };
+
+    expect(filterClubs(state.clubs, filters).map((club) => club.hourlyRate)).toEqual([350, 300]);
+  });
+
   it("calculates the captured court price and service fee", () => {
     expect(calculatePrice(350)).toEqual({
       courtSubtotal: 350,

@@ -42,7 +42,7 @@ export function CheckoutScreen() {
       <div className="page-pad checkout-page">
         <BackButton to={`/player/courts/${club.id}/time`} />
         <h1 className="page-title">التأكيد والدفع</h1>
-        <article className="summary-card booking-summary"><span className="summary-art"><CourtArtwork type={club.artwork} /></span><span><strong>{club.name}</strong><small>{formatShortDate(date)} · <span className="ltr">{time} – {addHour(time)}</span></small><small>ساعة واحدة · {court.name}</small></span></article>
+        <article className="summary-card booking-summary"><span className="summary-art"><CourtArtwork type={club.artwork} clubId={club.id} /></span><span><strong>{club.name}</strong><small>{formatShortDate(date)} · <span className="ltr">{time} – {addHour(time)}</span></small><small>ساعة واحدة · {court.name}</small></span></article>
         <section className="summary-card price-card"><div><span>سعر الملعب</span><strong>{formatNumber(price.courtSubtotal)} جنيه</strong></div><div><span>رسوم الخدمة</span><strong>{formatNumber(price.serviceFee)} جنيه</strong></div><hr /><div className="grand-total"><b>الإجمالي</b><strong>{formatNumber(price.customerTotal)} جنيه</strong></div></section>
         <h2 className="section-title">طريقة الدفع</h2>
         <section className="summary-card payment-card">
